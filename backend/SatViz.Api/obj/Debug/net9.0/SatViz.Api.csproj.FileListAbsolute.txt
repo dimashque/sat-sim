@@ -37,3 +37,6 @@ C:\Users\Dimashki\source\repos\sat-sim\backend\SatViz.Api\bin\Debug\net9.0\Micro
 C:\Users\Dimashki\source\repos\sat-sim\backend\SatViz.Api\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
 C:\Users\Dimashki\source\repos\sat-sim\backend\SatViz.Api\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
 C:\Users\Dimashki\source\repos\sat-sim\backend\SatViz.Api\bin\Debug\net9.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Dimashki\source\repos\sat-sim\backend\SatViz.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Dimashki\source\repos\sat-sim\backend\SatViz.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Dimashki\source\repos\sat-sim\backend\SatViz.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
