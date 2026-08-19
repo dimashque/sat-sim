@@ -15,6 +15,7 @@ function App() {
           <option value="">Select Satellite Group</option>
           <option value="stations">Stations</option>
           <option value="active">Active Satellites</option>
+          <option value="planet">Planet Ris</option>
         </select>
         {loading && <span style={{ color: "white", marginLeft: "1rem" }}>Loading...</span>}
         {error && <span style={{ color: "red", marginLeft: "1rem" }}>Error: {error}</span>}

@@ -36,7 +36,7 @@ export function useSatellitePositions(group, updateInterval = 2000) {
         })
         .catch((err) => {
             if (!cancelled) {
-            setError(err);
+            setError(err.toString());
             setLoading(false);
             } // If the component is unmounted, do not update state
 
