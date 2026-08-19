@@ -6,7 +6,7 @@ function App() {
   // Start with "stations" -- a tiny group (ISS, Tiangong, a couple others)
   // so you can visually confirm correctness before scaling up to hundreds
   // or thousands of objects in "active".
-  const { positions, loading, error } = useSatellitePositions("stations");
+  const { positions, loading, error } = useSatellitePositions("planet");
 
   if (loading) return <div style={{ color: "white" }}>Loading satellites...</div>;
   if (error) return <div style={{ color: "red" }}>Error: {error}</div>;

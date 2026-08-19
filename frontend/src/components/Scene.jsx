@@ -21,7 +21,7 @@ export default function Scene({ positions }) {
         <Satellites key={positions.length} positions={positions} />
       </Suspense>
 
-      <Stars radius={50} depth={50} count={3000} factor={2} fade />
+ { /*<Stars radius={50} depth={50} count={3000} factor={2} fade /> */}
       <OrbitControls enableDamping dampingFactor={0.05} minDistance={1.2} maxDistance={10} />
     </Canvas>
   );

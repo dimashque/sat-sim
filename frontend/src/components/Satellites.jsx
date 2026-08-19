@@ -26,6 +26,7 @@ function latLonAltToVector3(lat, lon, altKm, earthRadius = 1) {
 // reusing one geometry/material and just updating each instance's transform
 // matrix. This is the standard technique for "many identical small objects."
 export default function Satellites({ positions }) {
+    console.log("Satellites received:", positions.length, positions[0]);
   const meshRef = useRef();
 
   // dummy is a scratch object reused every frame to compute a transform
@@ -54,7 +55,7 @@ export default function Satellites({ positions }) {
       args={[null, null, positions.length]}
       frustumCulled={false} // prevents satellites near screen edges from popping out incorrectly
     >
-      <sphereGeometry args={[0.005, 8, 8]} />
+      <sphereGeometry args={[0.005,8, 8]} />
       <meshBasicMaterial color="orange" />
     </instancedMesh>
   );

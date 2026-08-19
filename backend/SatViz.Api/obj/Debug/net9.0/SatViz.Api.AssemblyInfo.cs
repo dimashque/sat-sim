@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SatViz.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+686f11224b1a7d77b2002e8d59cc27841fb8f919")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6cc0c338336e3e8ae892836c0f0d42bfb28df70")]
 [assembly: System.Reflection.AssemblyProductAttribute("SatViz.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SatViz.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
