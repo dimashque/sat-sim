@@ -5,7 +5,7 @@ import "./App.css";
 
 function App() {
   const [group, setGroup] = useState("");
-  const [selectedSat, setSelectedSat] = useState(null); // 👈 new
+  const [selectedSat, setSelectedSat] = useState(null); 
   const { positions, loading, error } = useSatellitePositions(group);
 
   return (
