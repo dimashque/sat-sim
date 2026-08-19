@@ -1,5 +1,13 @@
+# Node / React
 node_modules/
-bin/
-obj/
 dist/
 .env
+.env.local
+
+# .NET
+bin/
+obj/
+*.user
+
+# Editor
+.vscode/
