@@ -4,7 +4,7 @@ import { OrbitControls, Stars } from "@react-three/drei";
 import Earth from "./Earth";
 import Satellites from "./Satellites";
 
-export default function Scene({ positions }) {
+export default function Scene({ positions, onSatelliteClick }) {
   return (
     <Canvas camera={{ position: [0, 0, 3], fov: 50 }}>
       {/* Basic lighting: ambient so the dark side of Earth isn't pure
@@ -18,10 +18,10 @@ export default function Scene({ positions }) {
         {/* key={positions.length} forces a remount when satellite count
             changes, working around InstancedMesh's fixed instance count
             mentioned above. */}
-        <Satellites key={positions.length} positions={positions} />
+        <Satellites key={positions.length} positions={positions} onSatelliteClick={onSatelliteClick} />
       </Suspense>
 
- { /*<Stars radius={50} depth={50} count={3000} factor={2} fade /> */}
+ <Stars radius={50} depth={50} count={3000} factor={2} fade /> 
       <OrbitControls enableDamping dampingFactor={0.05} minDistance={1.2} maxDistance={10} />
     </Canvas>
   );

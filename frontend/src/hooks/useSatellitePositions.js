@@ -19,8 +19,8 @@ export function useSatellitePositions(group, updateInterval = 2000) {
         fetchSatelliteGroupe(group)
             .then((data) => {
                 if (cancelled) return; // If the component is unmounted, do not update state
-              const limited = data.slice(0, 2000); // Limit to first 2000 satellites for testing purposes. Adjust as needed for performance.
-                const parsed = limited
+           // const limited = data.slice(0, 2000); // Limit to first 2000 satellites for testing purposes. Adjust as needed for performance.
+                const parsed = data
                 .map((omm) => {
                     try {
                         const satrec = satellite.json2satrec(omm);
@@ -36,7 +36,7 @@ export function useSatellitePositions(group, updateInterval = 2000) {
         })
         .catch((err) => {
             if (!cancelled) {
-            setError(err);
+            setError(err.toString());
             setLoading(false);
             } // If the component is unmounted, do not update state
 

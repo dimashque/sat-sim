@@ -25,7 +25,7 @@ function latLonAltToVector3(lat, lon, altKm, earthRadius = 1) {
 // bottleneck. InstancedMesh draws all of them in a single draw call by
 // reusing one geometry/material and just updating each instance's transform
 // matrix. This is the standard technique for "many identical small objects."
-export default function Satellites({ positions }) {
+export default function Satellites({ positions, onSatelliteClick }) {
     console.log("Satellites received:", positions.length, positions[0]);
   const meshRef = useRef();
 
@@ -39,6 +39,7 @@ export default function Satellites({ positions }) {
 
     positions.forEach((sat, i) => {
       const pos = latLonAltToVector3(sat.lat, sat.lon, sat.alt);
+      const satName = sat.name || "Unknown";
       dummy.position.copy(pos);
       dummy.updateMatrix();
       meshRef.current.setMatrixAt(i, dummy.matrix);
@@ -54,6 +55,15 @@ export default function Satellites({ positions }) {
       ref={meshRef}
       args={[null, null, positions.length]}
       frustumCulled={false} // prevents satellites near screen edges from popping out incorrectly
+      onClick={(e) => {
+
+        e.stopPropagation(); // Prevent click from propagating to the scene background
+        const clickedSat = positions[e.instanceId];
+        if (clickedSat) {
+          onSatelliteClick(clickedSat);
+        }
+    }}
+      
     >
       <sphereGeometry args={[0.005,8, 8]} />
       <meshBasicMaterial color="orange" />
