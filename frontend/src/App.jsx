@@ -8,6 +8,7 @@ function App() {
   const [selectedSat, setSelectedSat] = useState(null); 
   const { positions, loading, error, findSatrec } = useSatellitePositions(group);
    const selectedSatrec = selectedSat ? findSatrec(selectedSat.noradId) : null;
+   console.log("selected noradId:", selectedSat?.noradId, "satrec satnum:", selectedSatrec?.satnum);
   return (
     <div style={{ position: "relative" }}>
       <div style={{ position: "absolute", zIndex: 10, padding: "1rem" }}>
@@ -16,6 +17,7 @@ function App() {
           <option value="stations">Stations</option>
           <option value="active">Active Satellites</option>
           <option value="planet">Planet Ris</option>
+          <option value="gps-ops">GPS</option>
         </select>
         {loading && <span style={{ color: "white", marginLeft: "1rem" }}>Loading...</span>}
         {error && <span style={{ color: "red", marginLeft: "1rem" }}>Error: {error}</span>}

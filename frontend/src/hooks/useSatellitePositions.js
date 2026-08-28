@@ -29,7 +29,7 @@ export function useSatellitePositions(group, updateInterval = 2000) {
                 .map((omm) => {
                     try {
                         const satrec = satellite.json2satrec(omm);
-                        return {satrec, name:omm.OBJECT_NAME, nordId: omm.NORAD_CAT_ID};
+                        return {satrec, name:omm.OBJECT_NAME, noradId: omm.NORAD_CAT_ID};
                     }catch  {
                         return null; // Skip invalid OMM entries
                 }
@@ -63,14 +63,14 @@ export function useSatellitePositions(group, updateInterval = 2000) {
             const gmst = satellite.gstime(now);
 
             const next = satrecsRef.current
-                .map(({satrec, name, nordId}) => {
+                .map(({satrec, name, noradId}) => {
                     const pv= satellite.propagate(satrec, now); // returns position and velocity in ECI coordinates pv
                     if (!pv.position)  return null; // Skip if propagation failed
 
                     const geo = satellite.eciToGeodetic(pv.position, gmst);
                     return {
                         name,
-                        nordId,
+                        noradId,
                         lat: satellite.degreesLat(geo.latitude),
                         lon: satellite.degreesLong(geo.longitude),
                         alt: geo.height,

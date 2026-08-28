@@ -20,33 +20,35 @@ function latLonAltToVector3(lat, lon, altKm, earthRadius = 1) {
 // selected one -- see note below on why we don't do this for every
 // satellite at once).
 export default function OrbitTrail({ satrec }) {
-  // useMemo here matters for the same reason as elsewhere: computing the
-  // trail involves ~90 propagate() calls (45 min before + 45 min after at
-  // 60s steps). Without memoization, this would re-run on every render
-  // (e.g. every time the parent re-renders for unrelated reasons), which
-  // is wasted work since the trail only needs to change when the
-  // satellite itself changes.
   const points = useMemo(() => {
     if (!satrec) return [];
     return computeOrbitTrail(satrec).map((p) => latLonAltToVector3(p.lat, p.lon, p.alt));
   }, [satrec]);
 
-  if (points.length < 2) return null; // need at least 2 points to draw a line
+  if (points.length < 2) return null;
+
+  const positionsArray = new Float32Array(points.flatMap((p) => [p.x, p.y, p.z]));
 
   return (
-    <line>
-      <bufferGeometry>
+    // key forces React to fully unmount/remount this <line> whenever the
+    // satellite changes, guaranteeing a brand new Three.js geometry object
+    // rather than an in-place update -- sidesteps any stale-buffer issues.
+    <line key={satrec.satnum} frustumCulled={false}>
+      <bufferGeometry
+        // onUpdate fires after R3F applies the attribute -- we use it to
+        // explicitly recompute the bounding sphere, since frustum culling
+        // (even with frustumCulled=false here, this matters for anything
+        // else relying on accurate bounds) depends on it being current.
+        onUpdate={(geometry) => geometry.computeBoundingSphere()}
+      >
         <bufferAttribute
           attach="attributes-position"
-          // Three.js buffer geometries want a flat Float32Array of
-          // x,y,z,x,y,z,... rather than an array of Vector3 objects --
-          // this flattens our points into that format.
           count={points.length}
-          array={new Float32Array(points.flatMap((p) => [p.x, p.y, p.z]))}
+          array={positionsArray}
           itemSize={3}
         />
       </bufferGeometry>
-      <lineBasicMaterial color="cyan" linewidth={1} transparent opacity={0.6} />
+      <lineBasicMaterial color="cyan" transparent opacity={0.6} />
     </line>
   );
 }
