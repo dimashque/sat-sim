@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSatellitePositions } from "./hooks/useSatellitePositions";
 import Scene from "./components/Scene";
 import "./App.css";
@@ -6,9 +6,22 @@ import "./App.css";
 function App() {
   const [group, setGroup] = useState("");
   const [selectedSat, setSelectedSat] = useState(null); 
+  const [searchTerm, setSearchTerm] = useState("");
   const { positions, loading, error, findSatrec } = useSatellitePositions(group);
    const selectedSatrec = selectedSat ? findSatrec(selectedSat.noradId) : null;
    console.log("selected noradId:", selectedSat?.noradId, "satrec satnum:", selectedSatrec?.satnum);
+
+   const filteredPositions = useMemo(() => {
+  if (!searchTerm.trim()) return positions; // empty search = show everything, no filtering cost
+
+  const term = searchTerm.toLowerCase();
+  return positions.filter(
+    (sat) =>
+      sat.name?.toLowerCase().includes(term) ||
+      String(sat.noradId).includes(term)
+  );
+}, [positions, searchTerm]);
+
   return (
     <div style={{ position: "relative" }}>
       <div style={{ position: "absolute", zIndex: 10, padding: "1rem" }}>
@@ -19,6 +32,15 @@ function App() {
           <option value="planet">Planet Ris</option>
           <option value="gps-ops">GPS</option>
         </select>
+
+         <input
+    type="text"
+    placeholder="Search by name or NORAD ID..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    style={{ padding: "0.4rem", width: "220px" }}
+  />
+
         {loading && <span style={{ color: "white", marginLeft: "1rem" }}>Loading...</span>}
         {error && <span style={{ color: "red", marginLeft: "1rem" }}>Error: {error}</span>}
       </div>
@@ -51,7 +73,7 @@ function App() {
       )}
 
       <div style={{ width: "100vw", height: "100vh", background: "black" }}>
-        <Scene positions={positions} onSatelliteClick={setSelectedSat} selectedSatrec={selectedSatrec} />
+        <Scene positions={filteredPositions} onSatelliteClick={setSelectedSat} selectedSatrec={selectedSatrec} />
       </div>
     </div>
   );
