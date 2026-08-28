@@ -10,6 +10,11 @@ export function useSatellitePositions(group, updateInterval = 2000) {
 // we store parsed satrecs in a ref to avoid re-render 
     const satrecsRef = useRef([]);
 
+    function findSatrec(noradId) {
+  const entry = satrecsRef.current.find((s) => s.noradId === noradId);
+  return entry ? entry.satrec : null;
+}
+
     // Effect 1 : Fetch satellite data when the group changes and parse it into satrecs
     useEffect(() => {
         let cancelled = false; // Flag to track if the component is still mounted
@@ -80,5 +85,5 @@ export function useSatellitePositions(group, updateInterval = 2000) {
 
         return () => clearInterval(intervalId); // Cleanup interval on unmount
     }, [group, updateInterval]);
-    return { positions, loading, error };
+    return { positions, loading, error, findSatrec };
                     }
