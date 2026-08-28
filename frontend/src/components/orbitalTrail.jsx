@@ -16,9 +16,7 @@ function latLonAltToVector3(lat, lon, altKm, earthRadius = 1) {
   );
 }
 
-// Renders the orbital path of a single satellite (typically the currently
-// selected one -- see note below on why we don't do this for every
-// satellite at once).
+// Renders the orbital path of a single satellite (selectedSatrec) as a line in the scene. The line is computed
 export default function OrbitTrail({ satrec }) {
   const points = useMemo(() => {
     if (!satrec) return [];
@@ -30,15 +28,11 @@ export default function OrbitTrail({ satrec }) {
   const positionsArray = new Float32Array(points.flatMap((p) => [p.x, p.y, p.z]));
 
   return (
-    // key forces React to fully unmount/remount this <line> whenever the
-    // satellite changes, guaranteeing a brand new Three.js geometry object
-    // rather than an in-place update -- sidesteps any stale-buffer issues.
+    // forces React to fully unmount/remount this <line> whenever the
+    // satellite changes.
     <line key={satrec.satnum} frustumCulled={false}>
       <bufferGeometry
-        // onUpdate fires after R3F applies the attribute -- we use it to
-        // explicitly recompute the bounding sphere, since frustum culling
-        // (even with frustumCulled=false here, this matters for anything
-        // else relying on accurate bounds) depends on it being current.
+
         onUpdate={(geometry) => geometry.computeBoundingSphere()}
       >
         <bufferAttribute
@@ -48,7 +42,7 @@ export default function OrbitTrail({ satrec }) {
           itemSize={3}
         />
       </bufferGeometry>
-      <lineBasicMaterial color="cyan" transparent opacity={0.6} />
+      <lineBasicMaterial color="#a78bfa" transparent opacity={0.6} linewidth={2.5} />
     </line>
   );
 }

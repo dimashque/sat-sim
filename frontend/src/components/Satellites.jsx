@@ -66,7 +66,7 @@ export default function Satellites({ positions, onSatelliteClick }) {
       
     >
       <sphereGeometry args={[0.005,8, 8]} />
-      <meshBasicMaterial color="orange" />
+      <meshBasicMaterial color="#ffb454" />
     </instancedMesh>
   );
 }
