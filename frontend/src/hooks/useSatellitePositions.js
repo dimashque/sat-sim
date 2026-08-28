@@ -10,6 +10,11 @@ export function useSatellitePositions(group, updateInterval = 2000) {
 // we store parsed satrecs in a ref to avoid re-render 
     const satrecsRef = useRef([]);
 
+    function findSatrec(noradId) {
+  const entry = satrecsRef.current.find((s) => s.noradId === noradId);
+  return entry ? entry.satrec : null;
+}
+
     // Effect 1 : Fetch satellite data when the group changes and parse it into satrecs
     useEffect(() => {
         let cancelled = false; // Flag to track if the component is still mounted
@@ -24,7 +29,7 @@ export function useSatellitePositions(group, updateInterval = 2000) {
                 .map((omm) => {
                     try {
                         const satrec = satellite.json2satrec(omm);
-                        return {satrec, name:omm.OBJECT_NAME, nordId: omm.NORAD_CAT_ID};
+                        return {satrec, name:omm.OBJECT_NAME, noradId: omm.NORAD_CAT_ID};
                     }catch  {
                         return null; // Skip invalid OMM entries
                 }
@@ -58,14 +63,14 @@ export function useSatellitePositions(group, updateInterval = 2000) {
             const gmst = satellite.gstime(now);
 
             const next = satrecsRef.current
-                .map(({satrec, name, nordId}) => {
+                .map(({satrec, name, noradId}) => {
                     const pv= satellite.propagate(satrec, now); // returns position and velocity in ECI coordinates pv
                     if (!pv.position)  return null; // Skip if propagation failed
 
                     const geo = satellite.eciToGeodetic(pv.position, gmst);
                     return {
                         name,
-                        nordId,
+                        noradId,
                         lat: satellite.degreesLat(geo.latitude),
                         lon: satellite.degreesLong(geo.longitude),
                         alt: geo.height,
@@ -80,5 +85,5 @@ export function useSatellitePositions(group, updateInterval = 2000) {
 
         return () => clearInterval(intervalId); // Cleanup interval on unmount
     }, [group, updateInterval]);
-    return { positions, loading, error };
+    return { positions, loading, error, findSatrec };
                     }

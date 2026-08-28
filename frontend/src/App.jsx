@@ -1,55 +1,93 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSatellitePositions } from "./hooks/useSatellitePositions";
 import Scene from "./components/Scene";
 import "./App.css";
 
 function App() {
   const [group, setGroup] = useState("");
-  const [selectedSat, setSelectedSat] = useState(null); 
-  const { positions, loading, error } = useSatellitePositions(group);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSat, setSelectedSat] = useState(null);
+
+  const { positions, loading, error, findSatrec } = useSatellitePositions(group);
+
+  const filteredPositions = useMemo(() => {
+    if (!searchTerm.trim()) return positions;
+    const term = searchTerm.toLowerCase();
+    return positions.filter(
+      (sat) =>
+        sat.name?.toLowerCase().includes(term) || String(sat.noradId).includes(term)
+    );
+  }, [positions, searchTerm]);
+
+  const selectedSatrec = selectedSat ? findSatrec(selectedSat.noradId) : null;
 
   return (
-    <div style={{ position: "relative" }}>
-      <div style={{ position: "absolute", zIndex: 10, padding: "1rem" }}>
-        <select value={group} onChange={(e) => setGroup(e.target.value)}>
-          <option value="">Select Satellite Group</option>
-          <option value="stations">Stations</option>
-          <option value="active">Active Satellites</option>
-          <option value="planet">Planet Ris</option>
-        </select>
-        {loading && <span style={{ color: "white", marginLeft: "1rem" }}>Loading...</span>}
-        {error && <span style={{ color: "red", marginLeft: "1rem" }}>Error: {error}</span>}
+    <div className="app-root">
+      <div className="control-strip">
+        <div className="live-indicator">
+          <span className="live-indicator__dot" />
+          LIVE TRACKING
+        </div>
+
+        <div className="control-strip__row">
+          <select
+            className="control-select"
+            value={group}
+            onChange={(e) => setGroup(e.target.value)}
+          >
+            <option value="">Select group</option>
+            <option value="stations">Stations</option>
+            <option value="active">Active satellites</option>
+          </select>
+        </div>
+
+        <input
+          className="control-input"
+          type="text"
+          placeholder="Search name or NORAD ID..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        {loading && <span className="status-text status-text--loading">Loading...</span>}
+        {error && <span className="status-text status-text--error">Error: {error}</span>}
       </div>
 
-      {/* Side detail panel -- only rendered when something is selected */}
       {selectedSat && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            zIndex: 10,
-            width: "280px",
-            height: "100vh",
-            background: "rgba(20, 20, 20, 0.9)",
-            color: "white",
-            padding: "1.5rem",
-            boxSizing: "border-box",
-          }}
-        >
-          <button onClick={() => setSelectedSat(null)} style={{ marginBottom: "1rem" }}>
-            ✕ Close
+        <div className="detail-panel">
+          <div className="detail-panel__brackets">
+            <span />
+            <span />
+          </div>
+
+          <button className="detail-panel__close" onClick={() => setSelectedSat(null)}>
+            ✕ CLOSE
           </button>
-          <h2>{selectedSat.name}</h2>
-          <p>NORAD ID: {selectedSat.noradId}</p>
-          <p>Latitude: {selectedSat.lat.toFixed(2)}°</p>
-          <p>Longitude: {selectedSat.lon.toFixed(2)}°</p>
-          <p>Altitude: {selectedSat.alt.toFixed(1)} km</p>
+
+          <div className="detail-panel__title">{selectedSat.name}</div>
+          <div className="detail-panel__subtitle">NORAD {selectedSat.noradId}</div>
+
+          <div className="data-row">
+            <span className="data-row__label">Latitude</span>
+            <span className="data-row__value">{selectedSat.lat.toFixed(2)}°</span>
+          </div>
+          <div className="data-row">
+            <span className="data-row__label">Longitude</span>
+            <span className="data-row__value">{selectedSat.lon.toFixed(2)}°</span>
+          </div>
+          <div className="data-row">
+            <span className="data-row__label">Altitude</span>
+            <span className="data-row__value">{selectedSat.alt.toFixed(1)} km</span>
+          </div>
         </div>
       )}
 
-      <div style={{ width: "100vw", height: "100vh", background: "black" }}>
-        <Scene positions={positions} onSatelliteClick={setSelectedSat} />
+      <div className="scene-container">
+        <Scene
+          positions={filteredPositions}
+          onSatelliteClick={setSelectedSat}
+          selectedSatrec={selectedSatrec}
+        />
       </div>
     </div>
   );

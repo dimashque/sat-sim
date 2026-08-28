@@ -56,12 +56,10 @@ Open the printed local URL (typically `http://localhost:5173`) once both are run
 
 ## Roadmap / ideas for later
 
-- [ ] Orbit path trails (draw the upcoming/past orbit line, not just current position)
-- [ ] Search/filter satellites by name or NORAD ID
 - [ ] Ground station / visibility overlay (pass predictions)
-- [ ] Persistent disk-based caching for backend (survive restarts during dev)
-- [ ] Deploy live demo (frontend + backend hosting)
-- [ ] Scale-aware satellite marker sizing (consistent visual size regardless of camera zoom)
+- [ ] Persistent caching for backend 
+- [ ] Scale-aware satellite marker sizing (and other UI improvments)
+
 
 ## Data attribution
 
