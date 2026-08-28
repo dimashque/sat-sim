@@ -6,8 +6,8 @@ import "./App.css";
 function App() {
   const [group, setGroup] = useState("");
   const [selectedSat, setSelectedSat] = useState(null); 
-  const { positions, loading, error } = useSatellitePositions(group);
-
+  const { positions, loading, error, findSatrec } = useSatellitePositions(group);
+   const selectedSatrec = selectedSat ? findSatrec(selectedSat.noradId) : null;
   return (
     <div style={{ position: "relative" }}>
       <div style={{ position: "absolute", zIndex: 10, padding: "1rem" }}>
@@ -49,7 +49,7 @@ function App() {
       )}
 
       <div style={{ width: "100vw", height: "100vh", background: "black" }}>
-        <Scene positions={positions} onSatelliteClick={setSelectedSat} />
+        <Scene positions={positions} onSatelliteClick={setSelectedSat} selectedSatrec={selectedSatrec} />
       </div>
     </div>
   );

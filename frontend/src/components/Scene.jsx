@@ -3,8 +3,9 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import Earth from "./Earth";
 import Satellites from "./Satellites";
+import OrbitTrail from "./orbitalTrail";
 
-export default function Scene({ positions, onSatelliteClick }) {
+export default function Scene({ positions, onSatelliteClick, selectedSatrec  }) {
   return (
     <Canvas camera={{ position: [0, 0, 3], fov: 50 }}>
       {/* Basic lighting: ambient so the dark side of Earth isn't pure
@@ -19,6 +20,7 @@ export default function Scene({ positions, onSatelliteClick }) {
             changes, working around InstancedMesh's fixed instance count
             mentioned above. */}
         <Satellites key={positions.length} positions={positions} onSatelliteClick={onSatelliteClick} />
+        {selectedSatrec && <OrbitTrail satrec={selectedSatrec} />}
       </Suspense>
 
  <Stars radius={50} depth={50} count={3000} factor={2} fade /> 
