@@ -9,14 +9,14 @@ A real-time 3D visualization of satellites orbiting Earth, built with a C# backe
 ## What it does
 
 - Fetches live orbital element sets (OMM/JSON) from CelesTrak for satellite groups (space stations, active satellites, Starlink, and more)
-- Propagates each satellite's real-time position using the SGP4 algorithm — the same orbit-propagation model used in real-world satellite tracking
+- Propagates each satellite's real-time position using the SGP4 algorithm, the same orbit propagation model used in real world satellite tracking
 - Renders Earth and satellites in an interactive 3D scene you can rotate, zoom, and explore
 - Click any satellite to view its details (name, NORAD ID, latitude/longitude, altitude) in a side panel
 - Draws each selected satellite's orbital path as a trail, spanning one full orbit based on its actual orbital period (so it works correctly for anything from a ~93-minute LEO orbit to a ~24-hour geostationary one)
 - Search/filter the currently loaded satellites by name or NORAD ID
 - Switch between satellite groups on the fly via a dropdown
 - Adjustable position-update interval, for faster or slower live animation
-- Styled as a mission-control-style tracking console: dark glass panels, monospace telemetry readouts, HUD-style corner brackets
+
 
 ## Tech stack
 
@@ -30,10 +30,10 @@ A real-time 3D visualization of satellites orbiting Earth, built with a C# backe
 - React + Vite
 - [Three.js](https://threejs.org/) via [`@react-three/fiber`](https://github.com/pmndrs/react-three-fiber) and [`@react-three/drei`](https://github.com/pmndrs/drei)
 - [`satellite.js`](https://github.com/shashwatak/satellite-js) for SGP4 orbit propagation (TLE/OMM → real-time position)
-- Instanced rendering to efficiently draw hundreds–thousands of satellites in a single draw call
+- Instanced rendering to efficiently draw hundreds thousands of satellites in a single draw call
 
 **Data source**
-- [CelesTrak](https://celestrak.org) — public orbital element data (GP/OMM format), no API key required
+- [CelesTrak](https://celestrak.org)  public orbital element data (GP/OMM format), no API key required
 
 ## How it works, briefly
 
@@ -62,7 +62,7 @@ Open the printed local URL (typically `http://localhost:5173`) once both are run
 
 ## Known limitations
 
-- Orbit trails show geometric ground-track shape only; because the trail is plotted in Earth-fixed (lat/lon) coordinates, the two ends won't perfectly close into a loop — this reflects the real westward drift of a satellite's ground track between orbits, not a bug.
+- Orbit trails show geometric ground-track shape only; because the trail is plotted in Earth-fixed (lat/lon) coordinates, the two ends won't perfectly close into a loop. this reflects the real westward drift of a satellite's ground track between orbits, not a bug.
 - Satellite marker size is currently fixed in scene units, so markers appear larger/smaller depending on camera zoom rather than staying a consistent screen size.
 
 ## Roadmap / ideas for later
@@ -71,7 +71,7 @@ Open the printed local URL (typically `http://localhost:5173`) once both are run
 - [x] Search/filter satellites by name or NORAD ID
 - [x] Deploy live demo (backend on Render; frontend deployment in progress)
 - [x] UI/visual design pass
-- [ ] Deploy live demo — backend containerized with Docker for Render; currently investigating CelesTrak requests timing out from some cloud-hosting IP ranges before going live
+- [ ] Deploy live demo, backend containerized with Docker for Render....currently investigating CelesTrak requests timing out from some cloud-hosting IP ranges before going live
 - [ ] Ground station / visibility overlay (pass predictions) 
 - [ ] Camera to satellite animation on click
 - [ ] Persistent caching for backend 
