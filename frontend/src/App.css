@@ -96,6 +96,13 @@ body {
 }
 
 /* ---------- Form controls ---------- */
+.control-select option {
+  background: var(--panel);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+}
+
 .control-select,
 .control-input {
   background: rgba(255, 255, 255, 0.04);

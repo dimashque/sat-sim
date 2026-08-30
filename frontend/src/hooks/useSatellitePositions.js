@@ -3,7 +3,7 @@ import * as satellite from 'satellite.js';
 import {fetchSatelliteGroupe} from '../api/satellites';
 
 // we use custom hook instead of inline useEffect => Fetching + propagating is a distinct unit of logic that could be reused
-export function useSatellitePositions(group, updateInterval = 2000) {
+export function useSatellitePositions(group, updateInterval ) {
     const [positions, setPositions] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -84,6 +84,6 @@ export function useSatellitePositions(group, updateInterval = 2000) {
         const intervalId = setInterval(tick, updateInterval);
 
         return () => clearInterval(intervalId); // Cleanup interval on unmount
-    }, [group, updateInterval]);
+    }, [group, updateInterval, loading]);
     return { positions, loading, error, findSatrec };
                     }
