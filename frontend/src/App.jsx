@@ -7,8 +7,9 @@ function App() {
   const [group, setGroup] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSat, setSelectedSat] = useState(null);
+  const [updateInterval, setUpdateInterval] = useState(2000);
 
-  const { positions, loading, error, findSatrec } = useSatellitePositions(group);
+  const { positions, loading, error, findSatrec } = useSatellitePositions(group, updateInterval);
 
   const filteredPositions = useMemo(() => {
     if (!searchTerm.trim()) return positions;
@@ -36,8 +37,12 @@ function App() {
             onChange={(e) => setGroup(e.target.value)}
           >
             <option value="">Select group</option>
-            <option value="stations">Stations</option>
-            <option value="active">Active satellites</option>
+            <option value="stations">Space Stations</option>
+            <option value="active">Active Satellites</option>
+            <option value="cubesat">Cubesats</option>
+            <option value="starlink">Starlink</option>
+            <option value="oneweb">OneWeb</option>
+            <option value="weather">Weather Satellites</option>
           </select>
         </div>
 
@@ -48,6 +53,21 @@ function App() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+
+        <div className="control-strip__row">
+  <label className="control-strip__label">Update speed</label>
+  <select
+    className="control-select"
+    value={updateInterval}
+    onChange={(e) => setUpdateInterval(Number(e.target.value))}
+  >
+
+    <option value={500}>Fast (0.5s)</option>
+    <option value={1000}>Normal (1s)</option>
+    <option value={2000}>Default (2s)</option>
+    <option value={5000}>Slow (5s)</option>
+  </select>
+</div>
 
         {loading && <span className="status-text status-text--loading">Loading...</span>}
         {error && <span className="status-text status-text--error">Error: {error}</span>}
