@@ -48,6 +48,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Render config  assign a port dynamically via PORT.
+// Locally, this env var won't exist, so we fall back to something
+// reasonable for dev.
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Urls.Add($"http://0.0.0.0:{port}");
+
 // Order matters here: UseCors must run before the endpoints that need it.
 app.UseCors("AllowFrontend");
 
