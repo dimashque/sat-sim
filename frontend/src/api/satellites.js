@@ -1,6 +1,6 @@
 // Centralizing the base URL here...
 // TODO : move to env variable or config file for production use
-const API_BASE = "http://localhost:5269" ;
+const API_BASE =  import.meta.env.VITE_API_BASE_URL || "http://localhost:5269" ;
 
 
 export async function fetchSatelliteGroupe(group) {
